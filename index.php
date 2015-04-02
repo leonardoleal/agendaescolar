@@ -15,7 +15,7 @@ function __autoload($arquivo)
 if (isset($_GET['file'])) {
 	$classe = ucfirst($_GET['file']).'Controller';
 } else {
-	$classe = 'LoginController';
+// 	$classe = 'LoginController';
 }
 
 new $classe();
