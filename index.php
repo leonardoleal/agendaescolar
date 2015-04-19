@@ -11,9 +11,9 @@ function __autoload($arquivo)
 		include_once "library/".$arquivo.".php";
 	}
 }
-
-if (isset($_GET['file'])) {
-	$classe = ucfirst($_GET['file']).'Controller';
+// var_dump($_REQUEST);
+if (isset($_GET['controller'])) {
+	$classe = ucfirst($_GET['controller']).'Controller';
 } else {
 // 	$classe = 'LoginController';
 }
