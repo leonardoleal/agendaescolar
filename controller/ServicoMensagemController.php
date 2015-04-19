@@ -1,11 +1,8 @@
 <?php
-class MensagemController {
+class ServicoMensagemController extends Controller {
 
-	function __construct() {
-		if (!isset($_GET['act'])) {
-			$_GET['act'] = 'consultaPorUsuario';
-		}
-		$this->$_GET['act']();
+	function index() {
+		echo ('Ação inválida.');
 	}
 
 	public function consultaPorUsuario() {

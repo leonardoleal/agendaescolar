@@ -1,0 +1,21 @@
+RewriteEngine on
+
+DirectoryIndex index.php
+
+###############################################
+# Necessário quando existe locais sem reescrita
+###############################################
+RewriteCond $1 !^(index\.php|static|files|services/.+\.php|sitemap.xml|google5e8a3bba36be380f.html)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+###############################################
+# reescreve url por parâmetros
+###############################################
+RewriteRule ^([^/]+)/([^/]+)/(\S+)$ index.php?controller=$1&action=$2&parameters=$3 [L]
+RewriteRule ^([^/]+)/([^/]+)$ index.php?controller=$1&action=$2 [L]
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)$ index.php?controller=$1 [L]

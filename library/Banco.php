@@ -2,7 +2,7 @@
 class Banco {
 	private $pdo;
 	function __construct() {
-		$this->pdo = new PDO('mysql:host=localhost;dbname=agendaescolar', 'root', '');
+ 		$this->pdo = new PDO('mysql:host=localhost;dbname=', '', '');
 	}
 
 	function pdo() {
