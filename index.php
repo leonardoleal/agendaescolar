@@ -14,8 +14,15 @@ function __autoload($arquivo)
 // var_dump($_REQUEST);
 if (isset($_GET['controller'])) {
 	$classe = ucfirst($_GET['controller']).'Controller';
+
+	if (isset($_GET['action'])) {
+		$method = $_GET['action'];
+	} else {
+		$method = 'index';
+	}
 } else {
 // 	$classe = 'LoginController';
 }
 
-new $classe();
+$controller = new $classe();
+$controller->$method();

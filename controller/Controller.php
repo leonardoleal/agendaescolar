@@ -12,11 +12,9 @@ abstract class Controller {
 			$this->post = $_POST;
 		}
 
-		if (!isset($_GET['action'])) {
-			$_GET['action'] = 'index';
-		}
-		$this->$_GET['action']();
+		$this->init();
 	}
 
+	protected function init() {}
 	abstract function index();
 }
