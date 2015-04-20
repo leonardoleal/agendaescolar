@@ -42,6 +42,7 @@ class ServicoSessaoController extends Controller {
 			}
 		}
 		echo "{msg: 'Usuário e senha inválido.}";
+		exit(0);
 	}
 
 	public function validarToken() {
@@ -68,26 +69,17 @@ class ServicoSessaoController extends Controller {
 				$banco->closeCursor();
 
 				if ($usuario instanceof Usuario) {
-					$usuario = $this->gerarToken($usuario);
 					Sessao::registrarSessao($usuario);
-
-					echo json_encode($usuario, JSON_FORCE_OBJECT);
 					return 1;
 				}
 			}
 		}
 		echo "{msg: 'Token inválido.}";
+		exit(0);
 	}
 
 	private function gerarToken(Usuario $usuario) {
-		$usuario->inicioSessao = date('Y-m-d h:i:s');
-
-		$usuario->token = md5(
-				uniqid(
-					md5($usuario->getIdUsuario()+$usuario->inicioSessao)
-					, true
-				)
-		);
+		$usuario->gerarToken();
 
 		$banco = new Banco();
 		$banco = $banco->getPdoConn()->prepare('

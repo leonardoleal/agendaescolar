@@ -7,7 +7,18 @@ class Usuario {
 	public $inicioSessao;
 	public $token;
 
-	function getIdUsuario() {
+	public function getIdUsuario() {
 		return $this->idUsuario;
+	}
+
+	public function gerarToken() {
+		$this->inicioSessao = date('Y-m-d h:i:s');
+
+		$this->token = md5(
+				uniqid(
+						md5($this->getIdUsuario()+$this->inicioSessao)
+						, true
+				)
+		);
 	}
 }
