@@ -23,20 +23,19 @@ class ServicoSessaoController extends Controller {
 						AND senha = MD5(:senha)
 					LIMIT 1;
 			');
-				
-			$banco->setFetchMode(PDO::FETCH_CLASS, 'Usuario');
+
 			$banco->bindValue(':usuario', $this->post['usuario'], PDO::PARAM_STR);
 			$banco->bindValue(':senha', $this->post['senha'], PDO::PARAM_STR);
-			
+			$banco->setFetchMode(PDO::FETCH_CLASS, 'Usuario');
+
 			if ($banco->execute()) {
 				$usuario = $banco->fetch();
 				$banco->closeCursor();
 
 				if ($usuario instanceof Usuario) {
 					$usuario = $this->gerarToken($usuario);
-
 					Sessao::registrarSessao($usuario);
-				
+
 					echo json_encode($usuario, JSON_FORCE_OBJECT);
 					return 1;
 				}
@@ -45,13 +44,50 @@ class ServicoSessaoController extends Controller {
 		echo "{msg: 'Usuário e senha inválido.}";
 	}
 
+	public function validarToken() {
+		header("Access-Control-Allow-Origin: *");
+		header("Content-Type: application/json");
+
+		if (isset($this->parameters[0])) {
+			$banco = new Banco();
+			$banco = $banco->getPdoConn()->prepare('
+					SELECT
+						*
+					FROM
+						usuario
+					WHERE
+						token = :token
+					LIMIT 1;
+			');
+
+			$banco->bindValue(':token', $this->parameters[0], PDO::PARAM_STR);
+			$banco->setFetchMode(PDO::FETCH_CLASS, 'Usuario');
+
+			if ($banco->execute()) {
+				$usuario = $banco->fetch();
+				$banco->closeCursor();
+
+				if ($usuario instanceof Usuario) {
+					$usuario = $this->gerarToken($usuario);
+					Sessao::registrarSessao($usuario);
+
+					echo json_encode($usuario, JSON_FORCE_OBJECT);
+					return 1;
+				}
+			}
+		}
+		echo "{msg: 'Token inválido.}";
+	}
+
 	private function gerarToken(Usuario $usuario) {
 		$usuario->inicioSessao = date('Y-m-d h:i:s');
 
-		$usuario->token = md5(uniqid(
-						md5($usuario->getId()+$usuario->inicioSessao)
-						, true)
-				);
+		$usuario->token = md5(
+				uniqid(
+					md5($usuario->getIdUsuario()+$usuario->inicioSessao)
+					, true
+				)
+		);
 
 		$banco = new Banco();
 		$banco = $banco->getPdoConn()->prepare('
@@ -61,12 +97,14 @@ class ServicoSessaoController extends Controller {
 						inicioSessao = :inicioSessao,
 						token = :token
 					WHERE
-						id = :id
+						idUsuario = :idUsuario
 		');
 
-		$banco->bindValue(':id', $usuario->getId(), PDO::PARAM_INT);
+		$banco->bindValue(':idUsuario', $usuario->getIdUsuario(), PDO::PARAM_INT);
 		$banco->bindValue(':inicioSessao', $usuario->inicioSessao, PDO::PARAM_STR);
 		$banco->bindValue(':token', $usuario->token, PDO::PARAM_STR);
+
+		$banco->setFetchMode(PDO::FETCH_CLASS, 'Usuario');
 		$banco->execute();
 
 		return $usuario;

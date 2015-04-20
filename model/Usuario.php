@@ -1,13 +1,13 @@
 <?php
 class Usuario {
-	private $id;
+	private $idUsuario;
 	public $idPessoa;
 	public $usuario;
 	public $senha;
 	public $inicioSessao;
 	public $token;
 
-	function getId() {
-		return $this->id;
+	function getIdUsuario() {
+		return $this->idUsuario;
 	}
 }

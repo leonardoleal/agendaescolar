@@ -5,7 +5,7 @@ class Sessao
 		session_start("logado");
 
 		if (isset($usuario)) {
-			$_SESSION['id'] = $usuario->getId();
+			$_SESSION['id'] = $usuario->getIdUsuario();
 			$_SESSION['nomeUsuario'] = $usuario->usuario;
 			$_SESSION['logado'] = true;
 			$_SESSION['token'] = $usuario->token;
