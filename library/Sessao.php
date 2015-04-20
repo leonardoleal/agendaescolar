@@ -1,14 +1,14 @@
 <?php
 class Sessao
 {
-	static function registrarSessao($nomeUsuario, $id)
-	{
+	static function registrarSessao(Usuario $usuario) {
 		session_start("logado");
 
-		if (isset($nomeUsuario)) {
-			$_SESSION['id'] = $id;
-			$_SESSION['nomeUsuario'] = $nomeUsuario;
+		if (isset($usuario)) {
+			$_SESSION['id'] = $usuario->getId();
+			$_SESSION['nomeUsuario'] = $usuario->usuario;
 			$_SESSION['logado'] = true;
+			$_SESSION['token'] = $usuario->token;
 		}
 	}
 
@@ -25,11 +25,15 @@ class Sessao
 		return $_SESSION['nomeUsuario'];
 	}
 
-	static function encerrarSessao()
-	{
+	static function getToken() {
+		return $_SESSION['token'];
+	}
+
+	static function encerrarSessao() {
 		session_start("logado");
 		unset($_SESSION['id']);
 		unset($_SESSION['nomeUsuario']);
 		unset($_SESSION['logado']);
+		unset($_SESSION['token']);
 	}
 }

@@ -2,10 +2,10 @@
 class Banco {
 	private $pdo;
 	function __construct() {
- 		$this->pdo = new PDO('mysql:host=localhost;dbname=', '', '');
+		$this->pdo = new PDO('mysql:host=localhost;dbname=', '', '');
 	}
 
-	function pdo() {
+	function getPdoConn() {
 		return $this->pdo;
 	}
 }

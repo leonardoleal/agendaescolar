@@ -7,7 +7,7 @@ class ServicoMensagemController extends Controller {
 
 	public function consultaPorUsuario() {
 		$banco = new Banco();
-		$banco = $banco->pdo()->prepare('
+		$banco = $banco->getPdoConn()->prepare('
 					SELECT
 						*
 					FROM
@@ -16,7 +16,7 @@ class ServicoMensagemController extends Controller {
 						1=1;
 			');
 			
-		$banco->setFetchMode(PDO::FETCH_CLASS, 'mensagem');
+		$banco->setFetchMode(PDO::FETCH_CLASS, 'Mensagem');
 
 		if (!$banco->execute()) {
 			echo "{}";
