@@ -15,9 +15,9 @@ class View {
 	function footer() {
 		echo '
 			<footer>
-				<p>Análise e Desenvolvimento de Sistemas</p>
-				<p>Prova de Aproveitamento Informal</p>
-				<p>Programação para Internet I</p>
+				<p>AnÃ¡lise e Desenvolvimento de Sistemas</p>
+				<p>Projeto de desenvolvimento</p>
+				<p>Agenda Escolar</p>
 			</footer>
 		';
 	}

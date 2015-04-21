@@ -1,4 +1,6 @@
 <?php
+header('Content-Type: text/html; charset=utf-8');
+
 function __autoload($arquivo)
 {
 	if (file_exists("controller/".$arquivo.".php")) {

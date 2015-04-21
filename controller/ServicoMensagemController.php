@@ -7,7 +7,7 @@ class ServicoMensagemController extends Controller {
 	}
 
 	function index() {
-		echo ('Ação inválida.');
+		echo ('AÃ§Ã£o invÃ¡lida.');
 	}
 
 	public function consultaPorResponsavel() {
@@ -40,7 +40,7 @@ class ServicoMensagemController extends Controller {
 		$banco->closeCursor();
 
 		if (sizeof($arrMensagens) <= 0) {
-			echo '{msg : "Nenhuma mensagem para este usuário"}';
+			echo '{msg : "Nenhuma mensagem para este usuÃ¡rio"}';
 			exit(2);
 		}
 

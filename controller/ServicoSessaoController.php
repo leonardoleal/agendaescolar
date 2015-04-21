@@ -2,7 +2,7 @@
 class ServicoSessaoController extends Controller {
 
 	function index() {
-		echo ('Ação inválida.');
+		echo ('AÃ§Ã£o invÃ¡lida.');
 	}
 
 	public function validarUsuario() {
@@ -41,7 +41,7 @@ class ServicoSessaoController extends Controller {
 				}
 			}
 		}
-		echo '{msg: "Usuário e senha inválido."}';
+		echo '{msg: "UsuÃ¡rio e senha invÃ¡lido."}';
 		exit(0);
 	}
 
@@ -74,7 +74,7 @@ class ServicoSessaoController extends Controller {
 				}
 			}
 		}
-		echo '{msg: "Token inválido."}';
+		echo '{msg: "Token invÃ¡lido."}';
 		exit(0);
 	}
 
