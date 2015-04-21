@@ -41,7 +41,7 @@ class ServicoSessaoController extends Controller {
 				}
 			}
 		}
-		echo "{msg: 'Usuário e senha inválido.}";
+		echo '{msg: "Usuário e senha inválido."}';
 		exit(0);
 	}
 
@@ -74,7 +74,7 @@ class ServicoSessaoController extends Controller {
 				}
 			}
 		}
-		echo "{msg: 'Token inválido.}";
+		echo '{msg: "Token inválido."}';
 		exit(0);
 	}
 
