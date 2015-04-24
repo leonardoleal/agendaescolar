@@ -14,18 +14,21 @@ class ServicoMensagemController extends Controller {
 		$banco = new Banco();
 		$banco = $banco->getPdoConn()->prepare('
 					SELECT
-						m.*
+						m.*,
+						pProf.nome as "professor"
 					FROM
 						mensagem AS m
 						INNER JOIN responsavelmensagem AS rm
-							ON rm.`idMensagem` = m.`idMensagem`
+							ON rm.idMensagem = m.idMensagem
 						INNER JOIN responsavel AS r
-							ON r.`idResponsavel` = rm.`idResponsavel`
+							ON r.idResponsavel = rm.idResponsavel
 						INNER JOIN pessoa AS p
-							ON p.`idpessoa` = r.`idPessoa`
+							ON p.idpessoa = r.idPessoa
 						INNER JOIN usuario AS u
-							ON u.`idPessoa` = p.`idpessoa`
-							AND  u.`token` = :token
+							ON u.idPessoa = p.idpessoa
+							AND  u.token = :token
+						INNER JOIN pessoa AS pProf
+							ON m.idAutor = pProf.idPessoa
 		');
 
 		$banco->bindValue(':token', Sessao::getToken(), PDO::PARAM_STR);
