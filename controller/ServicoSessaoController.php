@@ -15,9 +15,11 @@ class ServicoSessaoController extends Controller {
 			$banco = new Banco();
 			$banco = $banco->getPdoConn()->prepare('
 					SELECT
-						*
+						u.*
 					FROM
-						usuario
+						usuario AS u
+						INNER JOIN responsavel AS r
+						ON r.idPessoa = u.idPessoa
 					WHERE
 						usuario = :usuario
 						AND senha = MD5(:senha)
