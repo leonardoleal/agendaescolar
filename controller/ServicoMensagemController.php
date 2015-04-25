@@ -29,6 +29,8 @@ class ServicoMensagemController extends Controller {
 							AND  u.token = :token
 						INNER JOIN pessoa AS pProf
 							ON m.idAutor = pProf.idPessoa
+					WHERE
+						rm.status = "enviado"
 		');
 
 		$banco->bindValue(':token', Sessao::getToken(), PDO::PARAM_STR);
@@ -50,5 +52,38 @@ class ServicoMensagemController extends Controller {
 		header("Access-Control-Allow-Origin: *");
 		header("Content-Type: application/json");
 		echo json_encode($arrMensagens, JSON_FORCE_OBJECT);
-	} 
+	}
+
+	public function alterarStatusMensagem() {
+		if (isset($this->post['idMensagem'])
+				AND isset($this->post['status'])
+		) {
+			$banco = new Banco();
+			$banco = $banco->getPdoConn()->prepare('
+						UPDATE
+							responsavelmensagem AS rm
+							INNER JOIN responsavel AS r
+								ON r.idResponsavel = rm.idResponsavel
+							INNER JOIN pessoa AS p
+								ON p.idPessoa = r.idPessoa
+							INNER JOIN usuario AS u
+								ON u.idPessoa = p.idPessoa
+									AND u.token = :token
+						SET
+							status = :status
+						WHERE
+							rm.idMensagem = :idMensagem
+			');
+			$banco->bindValue(':idMensagem', $this->post['idMensagem'], PDO::PARAM_INT);
+			$banco->bindValue(':status', $this->post['status'], PDO::PARAM_STR);
+			$banco->bindValue(':token', Sessao::getToken(), PDO::PARAM_STR);
+
+			if ($banco->execute()) {
+				echo '{msg : "Sucesso."}';
+				exit(0);
+			}
+		}
+
+		echo '{msg : "Erro"}';
+	}
 }
