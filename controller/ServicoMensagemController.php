@@ -49,8 +49,6 @@ class ServicoMensagemController extends Controller {
 			exit(2);
 		}
 
-		header("Access-Control-Allow-Origin: *");
-		header("Content-Type: application/json");
 		echo json_encode($arrMensagens, JSON_FORCE_OBJECT);
 	}
 
@@ -58,6 +56,9 @@ class ServicoMensagemController extends Controller {
 		if (isset($this->post['idMensagem'])
 				AND isset($this->post['status'])
 		) {
+			// limpa valores em branco, caso haja
+			$this->post['idMensagem'] = array_filter($this->post['idMensagem']);
+
 			$banco = new Banco();
 			$banco = $banco->getPdoConn()->prepare('
 						UPDATE
@@ -72,9 +73,8 @@ class ServicoMensagemController extends Controller {
 						SET
 							status = :status
 						WHERE
-							rm.idMensagem = :idMensagem
+							rm.idMensagem IN('. join(',', $this->post['idMensagem']) .')
 			');
-			$banco->bindValue(':idMensagem', $this->post['idMensagem'], PDO::PARAM_INT);
 			$banco->bindValue(':status', $this->post['status'], PDO::PARAM_STR);
 			$banco->bindValue(':token', Sessao::getToken(), PDO::PARAM_STR);
 
