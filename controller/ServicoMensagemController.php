@@ -12,7 +12,7 @@ class ServicoMensagemController extends Controller {
 
 	public function consultaPorResponsavel() {
 		$banco = new Banco();
-		$banco = $banco->getPdoConn()->prepare('
+		$stmt = $banco->getPdoConn()->prepare('
 					SELECT
 						m.*,
 						pProf.nome as "professor"
@@ -27,22 +27,24 @@ class ServicoMensagemController extends Controller {
 						INNER JOIN usuario AS u
 							ON u.idPessoa = p.idpessoa
 							AND  u.token = :token
-						INNER JOIN pessoa AS pProf
-							ON m.idAutor = pProf.idPessoa
+						INNER JOIN (pessoa AS pProf 
+									INNER JOIN professor AS prof
+									ON pProf.idPessoa = prof.idPessoa
+								) ON m.idAutor = pProf.idPessoa
 					WHERE
 						rm.status = "enviado"
 		');
 
-		$banco->bindValue(':token', Sessao::getToken(), PDO::PARAM_STR);
-		$banco->setFetchMode(PDO::FETCH_CLASS, 'Mensagem');
+		$stmt->bindValue(':token', Sessao::getToken(), PDO::PARAM_STR);
+		$stmt->setFetchMode(PDO::FETCH_CLASS, 'Mensagem');
 
-		if (!$banco->execute()) {
+		if (!$stmt->execute()) {
 			echo '{msg : "Erro ao selecionar as mensagens."}';
 			exit(1);
 		}
 
-		$arrMensagens = $banco->fetchAll(PDO::FETCH_ASSOC);
-		$banco->closeCursor();
+		$arrMensagens = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$stmt->closeCursor();
 
 		if (sizeof($arrMensagens) <= 0) {
 			echo '{msg : "Nenhuma mensagem para este usuário"}';
@@ -53,14 +55,17 @@ class ServicoMensagemController extends Controller {
 	}
 
 	public function alterarStatusMensagem() {
-		if (isset($this->post['idMensagem'])
-				AND isset($this->post['status'])
+		if (!empty($this->post['idMensagem'])
+				AND !empty($this->post['status'])
 		) {
 			// limpa valores em branco, caso haja
 			$this->post['idMensagem'] = array_filter($this->post['idMensagem']);
 
 			$banco = new Banco();
-			$banco = $banco->getPdoConn()->prepare('
+			$banco = $banco->getPdoConn();
+			$banco->beginTransaction();
+
+			$stmt = $banco->prepare('
 						UPDATE
 							responsavelmensagem AS rm
 							INNER JOIN responsavel AS r
@@ -75,13 +80,100 @@ class ServicoMensagemController extends Controller {
 						WHERE
 							rm.idMensagem IN('. join(',', $this->post['idMensagem']) .')
 			');
-			$banco->bindValue(':status', $this->post['status'], PDO::PARAM_STR);
-			$banco->bindValue(':token', Sessao::getToken(), PDO::PARAM_STR);
+			$stmt->bindValue(':status', $this->post['status'], PDO::PARAM_STR);
+			$stmt->bindValue(':token', Sessao::getToken(), PDO::PARAM_STR);
 
-			if ($banco->execute()) {
+			if ($stmt->execute()) {
+				$banco->commit();
 				echo '{msg : "Sucesso."}';
 				exit(0);
 			}
+
+		}
+
+		echo '{msg : "Erro"}';
+	}
+
+	public function respostaResponsavel() {
+		if (!empty($this->post['idMensagem'])
+				AND !empty($this->post['idPessoa'])
+				AND !empty($this->post['mensagem'])
+		) {
+			$banco = new Banco();
+			$banco = $banco->getPdoConn();
+			$banco->beginTransaction();
+
+			$stmt = $banco->prepare('
+						INSERT INTO
+							mensagem (
+								idAutor,
+								idAluno,
+								assunto,
+								mensagem,
+								idPrecedente
+							)
+						VALUES (
+							:idPessoa,
+							(SELECT m1.idAluno FROM mensagem m1 WHERE m1.idMensagem = :idMensagem),
+							(SELECT m2.assunto FROM mensagem m2 WHERE m2.idMensagem = :idMensagem),
+							:mensagem,
+							:idMensagem
+						);
+			');
+			$stmt->bindValue(':idPessoa', $this->post['idPessoa'], PDO::PARAM_INT);
+			$stmt->bindValue(':idMensagem', $this->post['idMensagem'], PDO::PARAM_INT);
+			$stmt->bindValue(':mensagem', $this->post['mensagem'], PDO::PARAM_STR);
+
+			if (!$stmt->execute()) {
+				$banco->rollBack();
+				echo '{msg : "Erro 1"}';
+				exit(0);
+			}
+			$idMensagemNova = $banco->lastInsertId();
+
+			$stmt = $banco->prepare('
+						INSERT INTO
+							professormensagem (
+								idProfessor,
+								idMensagem
+							)
+						VALUES (
+							(SELECT pm.idProfessor FROM professormensagem pm WHERE pm.idMensagem = :idMensagem),
+							:idMensagemNova
+						);
+			');
+			$stmt->bindValue(':idMensagem', $this->post['idMensagem'], PDO::PARAM_INT);
+			$stmt->bindValue(':idMensagemNova', $idMensagemNova, PDO::PARAM_INT);
+
+			if (!$stmt->execute()) {
+				$banco->rollBack();
+				echo '{msg : "Erro 2"}';
+				exit(0);
+			}
+
+			$stmt = $banco->prepare('
+						INSERT INTO
+							responsavelmensagem (
+								idResponsavel,
+								idMensagem
+							)
+						VALUES (
+							(SELECT idResponsavel FROM responsavel WHERE idPessoa = :idPessoa),
+							:idMensagemNova
+						);
+			');
+			$stmt->bindValue(':idPessoa', $this->post['idPessoa'], PDO::PARAM_INT);
+			$stmt->bindValue(':idMensagemNova', $idMensagemNova, PDO::PARAM_INT);
+
+			if (!$stmt->execute()) {
+				$banco->rollBack();
+				echo '{msg : "Erro 3"}';
+				exit(0);
+			}
+
+			$banco->commit();
+			echo '{msg : "Suscesso"}';
+			exit();
 		}
 
 		echo '{msg : "Erro"}';

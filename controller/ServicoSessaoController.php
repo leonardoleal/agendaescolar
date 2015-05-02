@@ -9,11 +9,11 @@ class ServicoSessaoController extends Controller {
 		header("Access-Control-Allow-Origin: *");
 		header("Content-Type: application/json");
 
-		if ((isset($this->post['usuario'])
-				AND isset($this->post['senha']))
+		if (!empty($this->post['usuario'])
+				AND !empty($this->post['senha'])
 		) {
 			$banco = new Banco();
-			$banco = $banco->getPdoConn()->prepare('
+			$stmt = $banco->getPdoConn()->prepare('
 					SELECT
 						u.*
 					FROM
@@ -22,17 +22,17 @@ class ServicoSessaoController extends Controller {
 						ON r.idPessoa = u.idPessoa
 					WHERE
 						usuario = :usuario
-						AND senha = MD5(:senha)
+						AND senha = :senha
 					LIMIT 1;
 			');
 
-			$banco->bindValue(':usuario', $this->post['usuario'], PDO::PARAM_STR);
-			$banco->bindValue(':senha', $this->post['senha'], PDO::PARAM_STR);
-			$banco->setFetchMode(PDO::FETCH_CLASS, 'Usuario');
+			$stmt->bindValue(':usuario', $this->post['usuario'], PDO::PARAM_STR);
+			$stmt->bindValue(':senha', MD5($this->post['senha']), PDO::PARAM_STR);
+			$stmt->setFetchMode(PDO::FETCH_CLASS, 'Usuario');
 
-			if ($banco->execute()) {
-				$usuario = $banco->fetch();
-				$banco->closeCursor();
+			if ($stmt->execute()) {
+				$usuario = $stmt->fetch();
+				$stmt->closeCursor();
 
 				if ($usuario instanceof Usuario) {
 					$usuario = $this->gerarToken($usuario);
@@ -51,9 +51,9 @@ class ServicoSessaoController extends Controller {
 		header("Access-Control-Allow-Origin: *");
 		header("Content-Type: application/json");
 
-		if (isset($this->parameters[0])) {
+		if (!empty($this->parameters[0])) {
 			$banco = new Banco();
-			$banco = $banco->getPdoConn()->prepare('
+			$stmt = $banco->getPdoConn()->prepare('
 					SELECT
 						*
 					FROM
@@ -63,12 +63,12 @@ class ServicoSessaoController extends Controller {
 					LIMIT 1;
 			');
 
-			$banco->bindValue(':token', $this->parameters[0], PDO::PARAM_STR);
-			$banco->setFetchMode(PDO::FETCH_CLASS, 'Usuario');
+			$stmt->bindValue(':token', $this->parameters[0], PDO::PARAM_STR);
+			$stmt->setFetchMode(PDO::FETCH_CLASS, 'Usuario');
 
-			if ($banco->execute()) {
-				$usuario = $banco->fetch();
-				$banco->closeCursor();
+			if ($stmt->execute()) {
+				$usuario = $stmt->fetch();
+				$stmt->closeCursor();
 
 				if ($usuario instanceof Usuario) {
 					Sessao::registrarSessao($usuario);
@@ -84,7 +84,7 @@ class ServicoSessaoController extends Controller {
 		$usuario->gerarToken();
 
 		$banco = new Banco();
-		$banco = $banco->getPdoConn()->prepare('
+		$stmt = $banco->getPdoConn()->prepare('
 					UPDATE 
 						usuario
 					SET
@@ -94,12 +94,12 @@ class ServicoSessaoController extends Controller {
 						idUsuario = :idUsuario
 		');
 
-		$banco->bindValue(':idUsuario', $usuario->getIdUsuario(), PDO::PARAM_INT);
-		$banco->bindValue(':inicioSessao', $usuario->inicioSessao, PDO::PARAM_STR);
-		$banco->bindValue(':token', $usuario->token, PDO::PARAM_STR);
+		$stmt->bindValue(':idUsuario', $usuario->getIdUsuario(), PDO::PARAM_INT);
+		$stmt->bindValue(':inicioSessao', $usuario->inicioSessao, PDO::PARAM_STR);
+		$stmt->bindValue(':token', $usuario->token, PDO::PARAM_STR);
 
-		$banco->setFetchMode(PDO::FETCH_CLASS, 'Usuario');
-		$banco->execute();
+		$stmt->setFetchMode(PDO::FETCH_CLASS, 'Usuario');
+		$stmt->execute();
 
 		return $usuario;
 	}
