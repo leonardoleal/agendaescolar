@@ -6,41 +6,21 @@ class ServicoSessaoController extends Controller {
 	}
 
 	public function validarUsuario() {
-		header("Access-Control-Allow-Origin: *");
-		header("Content-Type: application/json");
+		$this->jsonHeaderDocument();
 
 		if (!empty($this->post['usuario'])
 				AND !empty($this->post['senha'])
 		) {
-			$banco = new Banco();
-			$stmt = $banco->getPdoConn()->prepare('
-					SELECT
-						u.*
-					FROM
-						usuario AS u
-						INNER JOIN responsavel AS r
-						ON r.idPessoa = u.idPessoa
-					WHERE
-						usuario = :usuario
-						AND senha = :senha
-					LIMIT 1;
-			');
+			$usuario = new Usuario(new TipoUsuarioEnum(TipoUsuarioEnum::RESPONSAVEL));
+			$usuario->usuario = $this->post['usuario'];
+			$usuario->senha = $this->post['senha'];
 
-			$stmt->bindValue(':usuario', $this->post['usuario'], PDO::PARAM_STR);
-			$stmt->bindValue(':senha', MD5($this->post['senha']), PDO::PARAM_STR);
-			$stmt->setFetchMode(PDO::FETCH_CLASS, 'Usuario');
+			if ($usuario->validarUsuario()) {
+				$usuario->gerarToken();
+				Sessao::registrarSessao($usuario);
 
-			if ($stmt->execute()) {
-				$usuario = $stmt->fetch();
-				$stmt->closeCursor();
-
-				if ($usuario instanceof Usuario) {
-					$usuario = $this->gerarToken($usuario);
-					Sessao::registrarSessao($usuario);
-
-					echo json_encode($usuario, JSON_FORCE_OBJECT);
-					return 1;
-				}
+				echo json_encode($usuario, JSON_FORCE_OBJECT);
+				return 1;
 			}
 		}
 		echo '{msg: "Usuário e senha inválido."}';
@@ -48,59 +28,19 @@ class ServicoSessaoController extends Controller {
 	}
 
 	public function validarToken() {
-		header("Access-Control-Allow-Origin: *");
-		header("Content-Type: application/json");
+		$this->jsonHeaderDocument();
 
 		if (!empty($this->parameters[0])) {
-			$banco = new Banco();
-			$stmt = $banco->getPdoConn()->prepare('
-					SELECT
-						*
-					FROM
-						usuario
-					WHERE
-						token = :token
-					LIMIT 1;
-			');
+			$usuario = new Usuario();
+			$usuario->token = $this->parameters[0];
 
-			$stmt->bindValue(':token', $this->parameters[0], PDO::PARAM_STR);
-			$stmt->setFetchMode(PDO::FETCH_CLASS, 'Usuario');
-
-			if ($stmt->execute()) {
-				$usuario = $stmt->fetch();
-				$stmt->closeCursor();
-
-				if ($usuario instanceof Usuario) {
-					Sessao::registrarSessao($usuario);
-					return 1;
-				}
+			if ($usuario->validarToken()) {
+				Sessao::registrarSessao($usuario);
+				return 1;
 			}
 		}
+
 		echo '{msg: "Token inválido."}';
 		exit(0);
-	}
-
-	private function gerarToken(Usuario $usuario) {
-		$usuario->gerarToken();
-
-		$banco = new Banco();
-		$stmt = $banco->getPdoConn()->prepare('
-					UPDATE 
-						usuario
-					SET
-						inicioSessao = :inicioSessao,
-						token = :token
-					WHERE
-						idUsuario = :idUsuario
-		');
-
-		$stmt->bindValue(':idUsuario', $usuario->getIdUsuario(), PDO::PARAM_INT);
-		$stmt->bindValue(':inicioSessao', $usuario->inicioSessao, PDO::PARAM_STR);
-		$stmt->bindValue(':token', $usuario->token, PDO::PARAM_STR);
-
-		$stmt->setFetchMode(PDO::FETCH_CLASS, 'Usuario');
-		$stmt->execute();
-
-		return $usuario;
 	}
 }

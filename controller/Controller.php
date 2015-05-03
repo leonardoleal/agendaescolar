@@ -17,4 +17,9 @@ abstract class Controller {
 
 	protected function init() {}
 	abstract function index();
+
+	protected function jsonHeaderDocument() {
+		header("Access-Control-Allow-Origin: *");
+		header("Content-Type: application/json");
+	}
 }
