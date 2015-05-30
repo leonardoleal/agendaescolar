@@ -1,12 +1,12 @@
 <?php
 class ServicoMensagemController extends Controller {
 
-	function init() {
+	public function init() {
 		$svSessao = new ServicoSessaoController();
 		$svSessao->validarToken();
 	}
 
-	function index() {
+	public function index() {
 		echo ('Ação inválida.');
 	}
 

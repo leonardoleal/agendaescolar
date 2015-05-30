@@ -1,7 +1,7 @@
 <?php
 class ServicoSessaoController extends Controller {
 
-	function index() {
+	public function index() {
 		echo ('Ação inválida.');
 	}
 

@@ -3,7 +3,7 @@ abstract class Controller {
 	protected $parameters = array();
 	protected $post = array();
 
-	function __construct() {
+	public function __construct() {
 		if (isset($_GET['parameters'])) {
 			$this->parameters = explode('/', $_GET['parameters']);
 		}

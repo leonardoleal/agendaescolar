@@ -23,7 +23,8 @@ if (isset($_GET['controller'])) {
 		$method = 'index';
 	}
 } else {
-// 	$classe = 'LoginController';
+	$classe = 'LoginController';
+	$method = 'index';
 }
 
 $controller = new $classe();
