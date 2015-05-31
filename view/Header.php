@@ -82,6 +82,6 @@
 				</ul>
 			</nav>
 			<!-- End of Main navigation -->
-			<?php  } ?>
+			<?php } ?>
 		</div>
 	</header>

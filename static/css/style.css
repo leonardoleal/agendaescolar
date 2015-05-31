@@ -1225,6 +1225,12 @@ footer#animated a:hover, footer#animated a:focus, footer#animated a:active {
 .icon-cancel {
 	background:url("../img/cancel.png") no-repeat;
 }
+.icon-delete {
+	background:url("../img/delete.png") no-repeat;
+}
+.icon-trash {
+	background:url("../img/trash.png") no-repeat;
+}
 
 .btn-special .icon {
 	margin-top: 2px

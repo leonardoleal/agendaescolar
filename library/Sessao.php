@@ -1,9 +1,10 @@
 <?php
 class Sessao {
 	static function registrarSessao(Usuario $usuario) {
-		Sessao::startSession();
 		if (isset($usuario)) {
+			Sessao::startSession();
 			$_SESSION['id'] = $usuario->getIdUsuario();
+			$_SESSION['idPessoa'] = $usuario->getIdPessoa();
 			$_SESSION['nomeUsuario'] = $usuario->usuario;
 			$_SESSION['logado'] = true;
 			$_SESSION['token'] = $usuario->token;
@@ -18,6 +19,11 @@ class Sessao {
 	static function getId() {
 		Sessao::startSession();
 		return $_SESSION['id'];
+	}
+
+	static function getIdPessoa() {
+		Sessao::startSession();
+		return $_SESSION['idPessoa'];
 	}
 
 	static function getNome() {
@@ -39,16 +45,26 @@ class Sessao {
 	}
 
 	static function redirecionaNaoLogado($url = '/') {
-		Sessao::startSession();
 		if (! Sessao::isLogado()) {
 			header('Location: ' . $url);
 		}
 	}
 
 	static private function startSession() {
-		if(session_id() == '') {
+		if(Sessao::is_session_started() === FALSE) {
 			session_start("logado");
 		}
+	}
+
+	static private function is_session_started() {
+		if ( php_sapi_name() !== 'cli' ) {
+			if ( version_compare(phpversion(), '5.4.0', '>=') ) {
+				return session_status() === PHP_SESSION_ACTIVE ? TRUE : FALSE;
+			} else {
+				return session_id() === '' ? FALSE : TRUE;
+			}
+		}
+		return FALSE;
 	}
 
 	static public function setMensagem($msg) {
@@ -58,7 +74,6 @@ class Sessao {
 	}
 
 	static public function getMensagem() {
-		Sessao::startSession();
 		if (Sessao::hasMensagem()) {
 			$msg = $_SESSION['mensagem'];
 			unset($_SESSION['mensagem']);
@@ -71,10 +86,6 @@ class Sessao {
 
 	static public function hasMensagem() {
 		Sessao::startSession();
-		if (isset($_SESSION['mensagem'])) {
-			return TRUE;
-		}
-
-		return FALSE;
+		return isset($_SESSION['mensagem']);
 	}
 }

@@ -17,6 +17,10 @@ class Usuario {
 		return $this->idUsuario;
 	}
 
+	public function getIdPessoa() {
+		return $this->idPessoa;
+	}
+
 	public function validarUsuario() {
 		$banco = new Banco();
 
