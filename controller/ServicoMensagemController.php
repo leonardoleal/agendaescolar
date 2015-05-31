@@ -14,7 +14,7 @@ class ServicoMensagemController extends Controller {
 		$banco = new Banco();
 		$stmt = $banco->getPdoConn()->prepare('
 					SELECT
-						m.*,
+						m.idMensagem, m.idAutor, m.idAluno, m.assunto, m.mensagem, m.dataEnvio, m.dataEvento, m.idPrecedente,
 						pProf.nome as "professor"
 					FROM
 						mensagem AS m

@@ -22,7 +22,8 @@ class Usuario {
 
 		$stmt = $banco->getPdoConn()->prepare('
 					SELECT
-						u.*
+						u.idUsuario, u.idPessoa, u.usuario,
+						u.senha, u.inicioSessao, u.token
 					FROM
 						usuario AS u
 						INNER JOIN '. $this->tipoUsuario .' AS tu
@@ -89,7 +90,8 @@ class Usuario {
 		$banco = new Banco();
 		$stmt = $banco->getPdoConn()->prepare('
 					SELECT
-						*
+						u.idUsuario, u.idPessoa, u.usuario,
+						u.senha, u.inicioSessao, u.token
 					FROM
 						usuario
 					WHERE

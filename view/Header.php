@@ -9,6 +9,9 @@
 <!--[if IE]>
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <![endif]-->
+
+<base href="http://agendaescolar.lealweb.com.br/">
+
 <!-- Favicons --> 
 <link rel="shortcut icon" type="image/png" href="static/img/favicons/favicon.png"/>
 <link rel="icon" type="image/png" href="static/img/favicons/favicon.png"/>
@@ -35,9 +38,6 @@
 <script type="text/javascript" src="static/js/jquery.validate_pack.js"></script>
 <!-- jQuery popup box -->
 <script type="text/javascript" src="static/js/jquery.nyroModal.pack.js"></script>
-<!-- jQuery graph plugins -->
-<!--[if IE]><script type="text/javascript" src="static/js/flot/excanvas.min.js"></script><![endif]-->
-<script type="text/javascript" src="static/js/flot/jquery.flot.min.js"></script>
 <!-- Internet Explorer Fixes --> 
 <!--[if IE]>
 <link rel="stylesheet" type="text/css" media="all" href="static/css/ie.css"/>
@@ -54,41 +54,31 @@
 		<div class="wrapper">
 			<!-- Title/Logo - can use text instead of image -->
 			<div id="title"><img src="static/img/logo.png" alt="Administry" /><!--<span>Administry</span> demo--></div>
-
-			<?php if(Sessao::isLogado()) { ?>
+			<?php if(!HTML::isSelectedPage('login') && HTML::isSelectedPage('')) { ?>
 			<!-- Top navigation -->
 			<div id="topnav">
 				<a href="#"><img class="avatar" src="static/img/user_32.png" alt="" /></a>
-				Logged in as <b>Admin</b>
-				<span>|</span> <a href="#">Settings</a>
-				<span>|</span> <a href="login/encerrar">Logout</a><br />
-				<small>You have <a href="#" class="high"><b>1</b> new message!</a></small>
+				Logado como <b><?php echo(Sessao::getNome()); ?></b>
+				<span>|</span> <a href="#">Configurações</a>
+				<span>|</span> <a href="login/encerrar">Sair</a><br />
 			</div>
 			<!-- End of Top navigation -->
 
 			<!-- Main navigation -->
 			<nav id="menu">
 				<ul class="sf-menu">
-					<li class="current"><a href="dashboard.html">Dashboard</a></li>
-					<li>
-						<a href="styles.html">Styles</a>
+					<li class="<?php echo( (HTML::isSelectedPage('default') ? 'current' : '') ); ?>"><a href="default">Inicio</a></li>
+					<li class="<?php echo( (HTML::isSelectedPage('mensagem') ? 'current' : '') ); ?>">
+						<a href="mensagem/listar">Mensagens</a>
 						<ul>
 							<li>
-								<a href="styles.html">Basic Styles</a>
+								<a href="mensagem/listar">Listar Mensagens</a>
 							</li>
 							<li>
-								<a href="#">Sample Pages...</a>
-								<ul>
-									<li><a href="samples-files.html">Files</a></li>
-									<li><a href="samples-products.html">Products</a></li>
-								</ul>
+								<a href="mensagem/nova">Nova Mensagem</a>
 							</li>
 						</ul>
 					</li>
-					<li><a href="grid.html">Grid</a></li>
-					<li><a href="tables.html">Tables</a></li>
-					<li><a href="forms.html">Forms</a></li>	
-					<li><a href="graphs.html">Graphs</a></li>	
 				</ul>
 			</nav>
 			<!-- End of Main navigation -->
