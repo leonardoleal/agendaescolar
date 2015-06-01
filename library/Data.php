@@ -9,12 +9,12 @@ class Data {
 	static public function getDataExtenso($str = 'today') {
 		Data::setLocalePtBr();
 
-		return strftime('%A, %d de %B de %Y', strtotime($str));
+		return ucfirst(strftime('%A, %d de %B de %Y', strtotime($str)));
 	}
 
 	static public function getDataHoraExtenso($str = 'now') {
 		Data::setLocalePtBr();
 
-		return strftime('%A, %d de %B de %Y as %H:%M', strtotime($str));
+		return ucfirst(strftime('%A, %d de %B de %Y as %H:%M', strtotime($str)));
 	}
 }

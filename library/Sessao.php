@@ -8,6 +8,8 @@ class Sessao {
 			$_SESSION['nomeUsuario'] = $usuario->usuario;
 			$_SESSION['logado'] = true;
 			$_SESSION['token'] = $usuario->token;
+			$_SESSION['inicioSessao'] = $usuario->inicioSessao;
+			$_SESSION['ultimaSessao'] = $usuario->ultimaSessao;
 		}
 	}
 
@@ -34,6 +36,16 @@ class Sessao {
 	static function getToken() {
 		Sessao::startSession();
 		return $_SESSION['token'];
+	}
+
+	static function getInicioSessao() {
+		Sessao::startSession();
+		return $_SESSION['inicioSessao'];
+	}
+
+	static function getUltimaSessao() {
+		Sessao::startSession();
+		return $_SESSION['ultimaSessao'];
 	}
 
 	static function encerrarSessao() {

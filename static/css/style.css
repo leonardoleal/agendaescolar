@@ -1474,6 +1474,15 @@ span.label {
 	text-transform:uppercase;
 	color:#fff;
 }
+
+span.label-left {
+  background: url("../img/tag-bg-left.gif") no-repeat scroll 0% 50% transparent;
+  font: bold 10px/1.2 "tahoma",sans-serif;
+  padding: 4px 5px 5px 16px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
 span.label-red {
 	background-color:#df0000;
 }

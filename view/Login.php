@@ -51,7 +51,7 @@
 						</p>
 						
 						<p>
-							<input type="submit" class="btn btn-green big" value="Logar"/> &nbsp; <a href="javascript: //;" onclick="$('#emailform').slideDown(); return false;">Esqueceu a senha?</a> or <a href="#">Need help?</a>
+							<input type="submit" class="btn btn-green big" value="Logar"/> &nbsp; <a href="javascript: //;" onclick="$('#emailform').slideDown(); return false;">Esqueceu a senha?</a>
 						</p>
 						<div class="clear">&nbsp;</div>
 

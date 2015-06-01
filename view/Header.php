@@ -10,7 +10,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <![endif]-->
 
-<base href="http://agendaescolar.lealweb.com.br/">
+<base href="http://localhost/SENAC/agendaescolar/">
 
 <!-- Favicons --> 
 <link rel="shortcut icon" type="image/png" href="static/img/favicons/favicon.png"/>

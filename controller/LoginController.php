@@ -15,6 +15,7 @@ class LoginController extends Controller {
 			$usuario->senha = $this->post['senha'];
 
 			if ($usuario->validarUsuario()) {
+				$usuario->gerarToken();
 				Sessao::registrarSessao($usuario);
 
 				HTML::redirect('../default');

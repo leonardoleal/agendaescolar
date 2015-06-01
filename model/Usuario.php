@@ -5,6 +5,7 @@ class Usuario {
 	public $usuario;
 	public $senha;
 	public $inicioSessao;
+	public $ultimaSessao;
 	public $token;
 	private $tipoUsuario;
 
@@ -49,6 +50,7 @@ class Usuario {
 
 			$this->idUsuario = $u->idUsuario;
 			$this->idPessoa = $u->idPessoa;
+			$this->ultimaSessao = $u->inicioSessao;
 
 			return TRUE;
 		}

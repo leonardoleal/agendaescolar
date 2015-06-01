@@ -2,7 +2,7 @@
 	<!-- Page footer -->
 	<footer id="bottom">
 		<div class="wrapper">
-			<p>Copyright &copy; 2010 <b><a href="http://themeforest.net/user/zoranjuric" title="Visit my profile page @ThemeForest">Zoran Juric</a></b> | Icons by <a href="http://www.famfamfam.com/">FAMFAMFAM</a></p>
+			<p>Copyright &copy; 2015 <b><a href="http://www.senacrs.com.br/" title="Visite a página do SENAC">SENAC</a></b></p>
 		</div>
 	</footer>
 	<!-- End of Page footer -->
