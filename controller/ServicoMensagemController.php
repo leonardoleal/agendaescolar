@@ -39,19 +39,19 @@ class ServicoMensagemController extends Controller {
 		$stmt->setFetchMode(PDO::FETCH_CLASS, 'Mensagem');
 
 		if (!$stmt->execute()) {
-			echo '{msg : "Erro ao selecionar as mensagens."}';
+            View::loadJSON(array('msg' => 'Erro ao selecionar as mensagens.'));
 			exit(1);
 		}
 
-		$arrMensagens = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$mensagens = $stmt->fetchAll();
 		$stmt->closeCursor();
 
-		if (sizeof($arrMensagens) <= 0) {
-			echo '{msg : "Nenhuma mensagem para este usuário"}';
-			exit(2);
-		}
+		if (sizeof($mensagens) <= 0) {
+            View::loadJSON(array('msg' => 'Nenhuma mensagem para este usuário.'));
+            exit(2);
+        }
 
-		echo json_encode($arrMensagens, JSON_FORCE_OBJECT);
+        View::loadJSON($mensagens);
 	}
 
 	public function alterarStatusMensagem() {
@@ -85,13 +85,13 @@ class ServicoMensagemController extends Controller {
 
 			if ($stmt->execute()) {
 				$banco->commit();
-				echo '{msg : "Sucesso."}';
+                View::loadJSON(array('msg' => 'Sucesso.'));
 				exit(0);
 			}
 
 		}
 
-		echo '{msg : "Erro"}';
+        View::loadJSON(array('msg' => 'Erro.'));
 	}
 
 	public function respostaResponsavel() {
@@ -126,7 +126,7 @@ class ServicoMensagemController extends Controller {
 
 			if (!$stmt->execute()) {
 				$banco->rollBack();
-				echo '{msg : "Erro 1"}';
+                View::loadJSON(array('msg' => 'Erro 1.'));
 				exit(0);
 			}
 			$idMensagemNova = $banco->lastInsertId();
@@ -147,7 +147,7 @@ class ServicoMensagemController extends Controller {
 
 			if (!$stmt->execute()) {
 				$banco->rollBack();
-				echo '{msg : "Erro 2"}';
+                View::loadJSON(array('msg' => 'Erro 2.'));
 				exit(0);
 			}
 
@@ -167,15 +167,15 @@ class ServicoMensagemController extends Controller {
 
 			if (!$stmt->execute()) {
 				$banco->rollBack();
-				echo '{msg : "Erro 3"}';
+                View::loadJSON(array('msg' => 'Erro 3.'));
 				exit(0);
 			}
 
 			$banco->commit();
-			echo '{msg : "Suscesso"}';
+            View::loadJSON(array('msg' => 'Sucesso.'));
 			exit();
 		}
 
-		echo '{msg : "Erro"}';
+        View::loadJSON(array('msg' => 'Erro.'));
 	}
 }

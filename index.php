@@ -2,8 +2,7 @@
 ob_start();
 header('Content-Type: text/html; charset=utf-8');
 
-function __autoload($arquivo)
-{
+function __autoload($arquivo) {
 	if (file_exists("controller/".$arquivo.".php")) {
 		include_once "controller/".$arquivo.".php";
 	} elseif (file_exists("model/".$arquivo.".php")) {

@@ -6,8 +6,6 @@ class ServicoSessaoController extends Controller {
 	}
 
 	public function validarUsuario() {
-		$this->jsonHeaderDocument();
-
 		if (!empty($this->post['usuario'])
 				AND !empty($this->post['senha'])
 		) {
@@ -19,17 +17,16 @@ class ServicoSessaoController extends Controller {
 				$usuario->gerarToken();
 				Sessao::registrarSessao($usuario);
 
-				echo json_encode($usuario, JSON_FORCE_OBJECT);
-				return 1;
+                View::loadJSON($usuario);
+				exit(0);
 			}
 		}
-		echo '{msg: "Usuário e senha inválido."}';
-		exit(0);
+
+        View::loadJSON(array('msg' => 'Usuário e senha inválido.'));
+		exit(1);
 	}
 
 	public function validarToken() {
-		$this->jsonHeaderDocument();
-
 		if (!empty($this->parameters[0])) {
 			$usuario = new Usuario();
 			$usuario->token = $this->parameters[0];
@@ -40,7 +37,7 @@ class ServicoSessaoController extends Controller {
 			}
 		}
 
-		echo '{msg: "Token inválido."}';
+        View::loadJSON(array('msg' => 'Token inválido.'));
 		exit(0);
 	}
 }

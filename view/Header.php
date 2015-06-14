@@ -16,11 +16,12 @@
 <link rel="shortcut icon" type="image/png" href="static/img/favicons/favicon.png"/>
 <link rel="icon" type="image/png" href="static/img/favicons/favicon.png"/>
 <link rel="apple-touch-icon" href="static/img/favicons/apple.png" />
-<!-- Main Stylesheet --> 
-<link rel="stylesheet" href="static/css/style.css" type="text/css" />
 
+<!-- Main Stylesheet -->
+<link rel="stylesheet" href="static/css/style.css" type="text/css" />
 <!-- Your Custom Stylesheet --> 
 <link rel="stylesheet" href="static/css/custom.css" type="text/css" />
+
 <!--swfobject - needed only if you require <video> tag support for older browsers -->
 <script type="text/javascript" src="static/js/swfobject.js"></script>
 <!-- jQuery with plugins -->
@@ -57,9 +58,9 @@
 			<?php if(!HTML::isSelectedPage('login') && HTML::isSelectedPage('')) { ?>
 			<!-- Top navigation -->
 			<div id="topnav">
-				<a href="#"><img class="avatar" src="static/img/user_32.png" alt="" /></a>
+				<a href="default#"><img class="avatar" src="static/img/user_32.png" alt="" /></a>
 				Logado como <b><?php echo(Sessao::getNome()); ?></b>
-				<span>|</span> <a href="#">Configurações</a>
+				<span>|</span> <a href="default#">Configurações</a>
 				<span>|</span> <a href="login/encerrar">Sair</a><br />
 			</div>
 			<!-- End of Top navigation -->

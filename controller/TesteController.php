@@ -37,12 +37,12 @@ class TesteController extends Controller {
 		}
 		$smc = new ServicoMensagemController();
 
-		header("Access-Control-Allow-Origin: *");
-		header("Content-Type: text/html; charset=UTF8");
+        $smc->consultaPorResponsavel();
 
-		$smc->consultaPorResponsavel();
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: text/html; charset=UTF8");
 
-		echo '
+        echo '
 				<form action="../../servicoMensagem/respostaResponsavel/'. $this->parameters[0] .'" method="POST">
 					idMensagem:<input type="text" name="idMensagem" value="">
 					idPessoa:<input type="text" name="idPessoa" value="21">

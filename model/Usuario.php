@@ -99,7 +99,7 @@ class Usuario {
 						u.idUsuario, u.idPessoa, u.usuario,
 						u.senha, u.inicioSessao, u.token
 					FROM
-						usuario
+						usuario AS u
 					WHERE
 						token = :token
 					LIMIT 1;
