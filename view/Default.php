@@ -4,7 +4,7 @@
 		Administry.setup();
 	});
 	</script>
-
+    <script src="static/js/simplecalendar.js" type="text/javascript"></script>
 	<!-- Page title -->
 	<div id="pagetitle">
 		<div class="wrapper">
@@ -58,29 +58,79 @@
 					<div class="colgroup leading">
 						<div class="column width4 first">
 							<hr/>
-							<table class="no-style full">
-								<tbody>
-									<tr>
-										<td>Calendário aqui</td>
-										<td class="ta-right">&nbsp;</td>
-										<td class="ta-right">&nbsp;</td>
-									</tr>
-								</tbody>
-							</table>
+                            <div class="calendar hidden-print">
+                                <header>
+                                    <h2 class="month"></h2>
+                                    <a class="btn-prev fontawesome-angle-left" href="#"></a>
+                                    <a class="btn-next fontawesome-angle-right" href="#"></a>
+                                </header>
+                                <table>
+                                    <thead class="event-days">
+                                    <tr></tr>
+                                    </thead>
+                                    <tbody class="event-calendar">
+                                    <tr class="1"></tr>
+                                    <tr class="2"></tr>
+                                    <tr class="3"></tr>
+                                    <tr class="4"></tr>
+                                    <tr class="5"></tr>
+                                    </tbody>
+                                </table>
+                            </div>
 						</div>
 
 						<div class="column width4">
-							<hr/>
-							<h4>Nome do evento selecionado</h4>
-							<p><b>Descrição</b></p>
-
-							<hr/>
-							<h4>Nome do evento selecionado</h4>
-							<p><b>Descrição</b></p>
-
-							<hr/>
-							<h4>Nome do evento selecionado</h4>
-							<p><b>Descrição</b></p>
+                            <hr/>
+                            <div class="day-event" date-month="6" date-day="15" data-number="1">
+                                <h2 class="title">Lorem ipsum 1</h2>
+                                <p class="date">2014-12-4</p>
+                                <p>Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. Lorem ipsum har varit standard ända sedan 1500-talet, när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett provexemplar av en bok.</p>
+                            </div>
+                            <div class="day-event" date-month="6" date-day="13" data-number="1">
+                                <h2 class="title">Lorem ipsum 2</h2>
+                                <p class="date">2014-12-13</p>
+                                <p>Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. Lorem ipsum har varit standard ända sedan 1500-talet, när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett provexemplar av en bok.</p>
+                            </div>
+                            <div class="day-event" date-month="6" date-day="13" data-number="2">
+                                <h2 class="title">Lorem ipsum 2</h2>
+                                <p class="date">2014-12-13</p>
+                                <p>Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. Lorem ipsum har varit standard ända sedan 1500-talet, när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett provexemplar av en bok.</p>
+                            </div>
+                            <div class="day-event" date-month="6" date-day="13" data-number="2">
+                                <h2 class="title">Lorem ipsum 2</h2>
+                                <p class="date">2014-12-13</p>
+                                <p>Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. Lorem ipsum har varit standard ända sedan 1500-talet, när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett provexemplar av en bok.</p>
+                            </div>
+                            <div class="day-event" date-month="6" date-day="13" data-number="2">
+                                <h2 class="title">Lorem ipsum 2</h2>
+                                <p class="date">2014-12-13</p>
+                                <p>Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. Lorem ipsum har varit standard ända sedan 1500-talet, när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett provexemplar av en bok.</p>
+                            </div>
+                            <div class="day-event" date-month="6" date-day="14" data-number="1">
+                                <h2 class="title">Lorem ipsum 3</h2>
+                                <p class="date">2014-12-14</p>
+                                <p>Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. Lorem ipsum har varit standard ända sedan 1500-talet, när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett provexemplar av en bok.</p>
+                            </div>
+                            <div class="day-event" date-month="7" date-day="16" data-number="1">
+                                <h2 class="title">Lorem ipsum 4</h2>
+                                <p class="date">2014-12-16</p>
+                                <p>Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. Lorem ipsum har varit standard ända sedan 1500-talet, när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett provexemplar av en bok.</p>
+                            </div>
+                            <div class="day-event" date-month="7" date-day="24" data-number="1">
+                                <h2 class="title">Lorem ipsum 5</h2>
+                                <p class="date">2014-12-24</p>
+                                <p>Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. Lorem ipsum har varit standard ända sedan 1500-talet, när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett provexemplar av en bok.</p>
+                            </div>
+                            <div class="day-event" date-month="5" date-day="31" data-number="1">
+                                <h2 class="title">Lorem ipsum 6</h2>
+                                <p class="date">2014-12-31</p>
+                                <p>Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. Lorem ipsum har varit standard ända sedan 1500-talet, när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett provexemplar av en bok.</p>
+                            </div>
+                            <div class="day-event" date-month="5" date-day="22" data-number="1">
+                                <h2 class="title">Lorem ipsum 6</h2>
+                                <p class="date">2014-12-31</p>
+                                <p>Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. Lorem ipsum har varit standard ända sedan 1500-talet, när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett provexemplar av en bok.</p>
+                            </div>
 						</div>
 					</div>
 

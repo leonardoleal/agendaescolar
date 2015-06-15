@@ -10,7 +10,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <![endif]-->
 
-<base href="http://localhost/SENAC/agendaescolar/">
+<base href="http://agendaescolar.lealweb.com.br/">
 
 <!-- Favicons --> 
 <link rel="shortcut icon" type="image/png" href="static/img/favicons/favicon.png"/>
@@ -21,12 +21,15 @@
 <link rel="stylesheet" href="static/css/style.css" type="text/css" />
 <!-- Your Custom Stylesheet --> 
 <link rel="stylesheet" href="static/css/custom.css" type="text/css" />
+<!-- SimpleEventCalendar -->
+<link rel="stylesheet" href="http://weloveiconfonts.com/api/?family=fontawesome">
+<link rel="stylesheet" href="static/css/calendar.css">
 
 <!--swfobject - needed only if you require <video> tag support for older browsers -->
 <script type="text/javascript" src="static/js/swfobject.js"></script>
 <!-- jQuery with plugins -->
-<script type="text/javascript" src="static/js/jquery-1.4.2.min.js"></script>
-<!-- Could be loaded remotely from Google CDN : <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> -->
+<script type="text/javascript" src="static/js/jquery-1.7.2.min.js"></script>
+<!-- Could be loaded remotely from Google CDN : <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> -->
 <script type="text/javascript" src="static/js/jquery.ui.core.min.js"></script>
 <script type="text/javascript" src="static/js/jquery.ui.widget.min.js"></script>
 <script type="text/javascript" src="static/js/jquery.ui.tabs.min.js"></script>
