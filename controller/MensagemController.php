@@ -23,9 +23,15 @@ class MensagemController extends Controller {
 
     public function detalhes() {
         $mensagem = new Mensagem();
-
         $mensagens = $mensagem->detalhesMensagem((int) $this->parameters[0]);
         View::addData($mensagens, 'mensagens');
+
+        $responsavel = new Responsavel();
+
+        $responsaveis = $responsavel->buscarTodos();
+        View::addData($responsaveis, 'responsaveis');
+
+
 
         View::load('MensagemDetalhes');
     }
@@ -35,6 +41,23 @@ class MensagemController extends Controller {
     }
 
     public function enviar() {
-        HTML::redirect('mensagem/detalhes');
+        $msg = 'Falha ao enviar a mensagem';
+        if(isset($this->post['mensagem'])
+            AND isset($this->post['idPrecedente'])
+        ) {
+            $mensagem = new Mensagem();
+
+            $mensagem->idAutor = Sessao::getIdPessoa();
+            $mensagem->idPrecedente = $this->post['idPrecedente'];
+            $mensagem->mensagem = $this->post['mensagem'];
+            $mensagem->destinatario = $this->post['idDestinatario'];
+
+            if($mensagem->gravar()) {
+                $msg = 'Mensagem enviada';
+            }
+        }
+
+        Sessao::setMensagem($msg);
+        HTML::redirect('../mensagem/detalhes/'. $this->post['idPrecedente']);
     }
 }

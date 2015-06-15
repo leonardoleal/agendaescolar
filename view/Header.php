@@ -54,7 +54,7 @@
 	<header id="top">
 		<div class="wrapper">
 			<!-- Title/Logo - can use text instead of image -->
-			<div id="title"><img src="static/img/logo.png" alt="Administry" /><!--<span>Administry</span> demo--></div>
+			<div id="title"><img src="static/img/logo.png" alt="Administry" /></div>
 			<?php if(!HTML::isSelectedPage('login') && HTML::isSelectedPage('')) { ?>
 			<!-- Top navigation -->
 			<div id="topnav">

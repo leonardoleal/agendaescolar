@@ -9,6 +9,7 @@ class Mensagem {
     public $dataEvento;
     public $idPrecedente;
     public $totalRespostas;
+    public $destinatario;
 
 	public function toArray() {
 		return get_object_vars($this);
@@ -147,4 +148,79 @@ class Mensagem {
 
         return $mensagens;
     }
+
+    public function gravar() {
+            $banco = new Banco();
+            $banco = $banco->getPdoConn();
+            $banco->beginTransaction();
+
+            $stmt = $banco->prepare('
+						INSERT INTO
+							mensagem (
+								idAutor,
+								idAluno,
+								assunto,
+								mensagem,
+								idPrecedente
+							)
+						VALUES (
+							:idPessoa,
+							(SELECT m2.idAluno FROM mensagem m2 WHERE m2.idMensagem = :idPrecedente),
+							(SELECT m1.assunto FROM mensagem m1 WHERE m1.idMensagem = :idPrecedente),
+							:mensagem,
+							:idPrecedente
+						);
+			');
+            $stmt->bindValue(':idPessoa', $this->idAutor, PDO::PARAM_INT);
+            $stmt->bindValue(':idPrecedente', $this->idPrecedente, PDO::PARAM_INT);
+            $stmt->bindValue(':mensagem', $this->mensagem, PDO::PARAM_STR);
+
+            if (!$stmt->execute()) {
+                $banco->rollBack();
+                return FALSE;
+            }
+
+            $idMensagemNova = $banco->lastInsertId();
+
+            $stmt = $banco->prepare('
+						INSERT INTO
+							professormensagem (
+								idProfessor,
+								idMensagem
+							)
+						VALUES (
+							(SELECT p.idProfessor FROM professor p WHERE p.idPessoa = :idPessoa),
+							:idMensagemNova
+						);
+			');
+            $stmt->bindValue(':idPessoa', $this->idAutor, PDO::PARAM_INT);
+            $stmt->bindValue(':idMensagemNova', $idMensagemNova, PDO::PARAM_INT);
+
+            if (!$stmt->execute()) {
+                $banco->rollBack();
+                return FALSE;
+            }
+
+            $stmt = $banco->prepare('
+						INSERT INTO
+							responsavelmensagem (
+								idResponsavel,
+								idMensagem
+							)
+						VALUES (
+						    :idDestinatario,
+							:idMensagemNova
+						);
+			');
+            $stmt->bindValue(':idDestinatario', $this->destinatario, PDO::PARAM_INT);
+            $stmt->bindValue(':idMensagemNova', $idMensagemNova, PDO::PARAM_INT);
+
+            if (!$stmt->execute()) {
+                $banco->rollBack();
+                return FALSE;
+            }
+
+            $banco->commit();
+            return TRUE;
+        }
 }

@@ -1,18 +1,36 @@
-<!--suppress ALL -->
-
 <script type="text/javascript">
     $(document).ready(function(){
         Administry.setup();
         $('.content-box-closed').last().removeClass('content-box-closed');
+        formResposta.init();
     });
+
+    var formResposta = {
+        form: null,
+
+        init: function() {
+            this.form = $('#formResposta');
+            this.form.parent().css('display', 'none');
+
+            var pathname = window.location.href;
+            var pathnames = pathname.split('#');
+
+            if(pathnames[1] == 'responder') {
+                this.showForm();
+            }
+            $('span').parent('a[href*=#responder]').click(this.showForm);
+        },
+
+        showForm: function() {
+            $('#formResposta').parent().toggle('slow');
+        }
+    };
 </script>
 
 <!-- Page title -->
 <div id="pagetitle">
     <div class="wrapper">
         <h1>Mensagens</h1>
-        <!-- Quick search box -->
-        <form action="" method="get"><input class="" type="text" id="q" name="q" /></form>
     </div>
 </div>
 <!-- End of Page title -->
@@ -29,6 +47,13 @@
                 <div class="box box-warning"><?php echo(Sessao::getMensagem()); ?></div>
             <?php } ?>
 
+            <a href="#responder">
+                <span class="label label-blue float-right">Responder</span>
+            </a>
+            <a href="mensagem/listar">
+                <span class="label-left label-blue float-right voltar">Voltar</span>
+            </a>
+
             <?php foreach ($data['mensagens'] as $mensagem) { ?>
             <div class="column width8">
                 <div class="content-box corners content-box-closed">
@@ -43,48 +68,39 @@
             </div>
             <?php } ?>
 
-            <form id="sampleform" method="post" action="#">
-                <fieldset>
-                    <legend>
+            <a href="#responder">
+                <span class="label label-blue float-right">Responder</span>
+            </a>
+            <a href="mensagem/listar">
+                <span class="label-left label-blue float-right voltar">Voltar</span>
+            </a>
 
-                    </legend><p>
-                        <label class="required" for="titulo">TÍTULO:</label>
-                        <br/>
-                        <input type="text" id="titulo" class="half" value="" name="titulo"/>
-                    </p>
+            <div class="column width8" style="display: none">
+                <form id="formResposta" method="post" action="mensagem/enviar">
+                    <fieldset>
+                        <p>
+                            <label for="idDestinatario">Para:</label>
+                            <select id="idDestinatario" name="idDestinatario">
+                                <?php foreach ($data['responsaveis'] as $responsavel) { ?>
+                                   <option value="<?php echo($responsavel->idResponsavel); ?>">
+                                       <?php echo($responsavel->nome); ?>
+                                   </option>
+                                <?php } ?>
+                            </select>
 
-                    <p>
-                        <label for="wysiwyg">Mensagem:</label><br/>
-                        <textarea  id="wysiwyg" class="required full wysiwyg" name="wysiwyg"></textarea>
+                            <input type="hidden" id="idPrecedente" name="idPrecedente" value="<?php echo($data['mensagens'][0]->idMensagem); ?>">
+                        </p>
+                        <p>
+                            <label for="mensagem">Mensagem:</label><br/>
 
-                    </p>
-                    <p>
-                        <label for="select1">Tipo de Evento:</label><br/>
-                        <select id="select1" class="half" name="select1">
-                            <option value="1">Passeio</option>
-                            <option value="2">Reunião</option>
-                            <option value="3">Evento</option>
-                        </select>
-                    </p>
+                        </p><textarea id="mensagem" class="required full" name="mensagem"></textarea>
 
-                    <p>&nbsp;</p>
+                        <input type="submit" class="btn btn-green big float-right" value="Enviar"/>
+                        <input type="reset" class="btn big float-right" value="Cancelar"/>
+                    </fieldset>
+                </form>
+            </div>
 
-                    <p>
-                        <label class="required">fORMATO DATA:</label>
-                        <br/>
-                        <input type="radio" id="dateformat1" class="" value="dmy" name="dateformat"/>
-                        <label class="choice" for="dateformat1">dd/mm/yyyy</label>
-                        <input type="radio" id="dateformat2" class="" value="mdy" name="dateformat"/>
-                        <label class="choice" for="dateformat2">mm/dd/yyyy</label>
-                    </p>
-
-                    <p>&nbsp;</p>
-
-                    <p class="box"><input type="submit" class="btn btn-green big" value="Inserir"/> ou <input type="reset" class="btn" value="Limpar"/></p>
-
-                </fieldset>
-
-            </form>
         </section>
         <!-- End of Left column/section -->
     </div>

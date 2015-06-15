@@ -85,7 +85,7 @@
                                 <td>
                                     <a href="mensagem/detalhes/<?php echo($mensagem->idMensagem); ?>"  title="Abrir Mensagem">
                                         <b><?php echo($mensagem->assunto); ?></b>
-                                        <?php echo(!$mensagem->totalRespostas ? '' : '('. $mensagem->totalRespostas .')'); ?>
+                                        <?php echo(!$mensagem->totalRespostas ? '' : '('. ($mensagem->totalRespostas + 1) .')'); ?>
                                     </a>
                                 </td>
                                 <td><?php echo('Turma'); ?></td>

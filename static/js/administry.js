@@ -46,6 +46,16 @@ Administry.scrollToTop = function (e) {
 
 // setup() - Administry init and setup
 Administry.setup = function () {
+    // to anchor works with base html
+    var pathname = window.location.href;
+    $('a').each(function () {
+        var link = $(this).attr('href');
+        if (link.substr(0,1) == "#") {
+            pathnames = pathname.split('#');
+            $(this).attr('href', pathnames[0] + link);
+        }
+    });
+
     // Open an external link in a new window
     $('a[href^="http://"]').filter(function () {
         return this.hostname && this.hostname !== location.hostname;
