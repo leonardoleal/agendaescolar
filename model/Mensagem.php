@@ -34,6 +34,8 @@ class Mensagem {
 					WHERE
 						m.idAutor = :idLogado
 						AND m.idPrecedente IS NULL
+                    ORDER BY
+                        m.dataEnvio DESC
 		'); // TODO adicionar parametros e paginar
 
 		$stmt->bindValue(':idLogado', Sessao::getIdPessoa(), PDO::PARAM_INT);
@@ -165,15 +167,23 @@ class Mensagem {
 							)
 						VALUES (
 							:idPessoa,
-							(SELECT m2.idAluno FROM mensagem m2 WHERE m2.idMensagem = :idPrecedente),
-							(SELECT m1.assunto FROM mensagem m1 WHERE m1.idMensagem = :idPrecedente),
+							(SELECT a.idAluno FROM aluno a
+                                INNER JOIN alunoresponsavel ar
+                                  ON ar.idAluno = a.idAluno
+                                  INNER JOIN responsavel r
+                                    ON r.idResponsavel = ar.idResponsavel
+                                      AND r.idResponsavel = :idDestinatario
+                                LIMIT 1),
+							:assunto,
 							:mensagem,
 							:idPrecedente
 						);
 			');
             $stmt->bindValue(':idPessoa', $this->idAutor, PDO::PARAM_INT);
-            $stmt->bindValue(':idPrecedente', $this->idPrecedente, PDO::PARAM_INT);
+            $stmt->bindValue(':idDestinatario', $this->destinatario, PDO::PARAM_INT);
+            $stmt->bindValue(':assunto', $this->assunto, PDO::PARAM_STR);
             $stmt->bindValue(':mensagem', $this->mensagem, PDO::PARAM_STR);
+            $stmt->bindValue(':idPrecedente', $this->idPrecedente, PDO::PARAM_INT);
 
             if (!$stmt->execute()) {
                 $banco->rollBack();

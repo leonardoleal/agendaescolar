@@ -89,12 +89,13 @@
                             </select>
 
                             <input type="hidden" id="idPrecedente" name="idPrecedente" value="<?php echo($data['mensagens'][0]->idMensagem); ?>">
+                            <input type="hidden" id="assunto" name="assunto" value="<?php echo($data['mensagens'][0]->assunto); ?>">
                         </p>
                         <p>
                             <label for="mensagem">Mensagem:</label><br/>
+                            <textarea id="mensagem" class="required full" name="mensagem" required="required"></textarea>
 
-                        </p><textarea id="mensagem" class="required full" name="mensagem"></textarea>
-
+                        </p>
                         <input type="submit" class="btn btn-green big float-right" value="Enviar"/>
                         <input type="reset" class="btn big float-right" value="Cancelar"/>
                     </fieldset>

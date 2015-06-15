@@ -53,6 +53,9 @@
 		<div class="wrapper">
 				<!-- Left column/section -->
 				<section class="column width8 first">
+                    <?php if (Sessao::hasMensagem()) {?>
+                        <div class="box box-warning"><?php echo(Sessao::getMensagem()); ?></div>
+                    <?php } ?>
 					<div class="clear">&nbsp;</div>
 
 

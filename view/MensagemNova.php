@@ -2,8 +2,6 @@
 <div id="pagetitle">
     <div class="wrapper">
         <h1>Mensagens</h1>
-        <!-- Quick search box -->
-        <form action="" method="get"><input class="" type="text" id="q" name="q" /></form>
     </div>
 </div>
 <!-- End of Page title -->
@@ -20,49 +18,32 @@
                 <div class="box box-warning"><?php echo(Sessao::getMensagem()); ?></div>
             <?php } ?>
 
-            <form id="sampleform" method="post" action="#">
-
-                <fieldset>
-                    <legend>
-
-                    </legend><p>
-                        <label class="required" for="titulo">TÍTULO:</label>
-                        <br/>
-                        <input type="text" id="titulo" class="half" value="" name="titulo"/>
-                    </p>
-
-                    <p>
-                        <label for="wysiwyg">Mensagem:</label><br/>
-                        <textarea  id="wysiwyg" class="required full wysiwyg" name="wysiwyg"></textarea>
-
-                    </p>
-                    <p>
-                        <label for="select1">Tipo de Evento:</label><br/>
-                        <select id="select1" class="half" name="select1">
-                            <option value="1">Passeio</option>
-                            <option value="2">Reunião</option>
-                            <option value="3">Evento</option>
-                        </select>
-                    </p>
-
-                    <p>&nbsp;</p>
-
-                    <p>
-                        <label class="required">fORMATO DATA:</label>
-                        <br/>
-                        <input type="radio" id="dateformat1" class="" value="dmy" name="dateformat"/>
-                        <label class="choice" for="dateformat1">dd/mm/yyyy</label>
-                        <input type="radio" id="dateformat2" class="" value="mdy" name="dateformat"/>
-                        <label class="choice" for="dateformat2">mm/dd/yyyy</label>
-                    </p>
-
-                    <p>&nbsp;</p>
-
-                    <p class="box"><input type="submit" class="btn btn-green big" value="Inserir"/> ou <input type="reset" class="btn" value="Limpar"/></p>
-
-                </fieldset>
-
-            </form>
+            <div class="column width8">
+                <form id="formNovaMensagem" method="post" action="mensagem/enviar">
+                    <fieldset>
+                        <p>
+                            <label for="idDestinatario">Para:</label>
+                            <select id="idDestinatario" name="idDestinatario">
+                                <?php foreach ($data['responsaveis'] as $responsavel) { ?>
+                                    <option value="<?php echo($responsavel->idResponsavel); ?>">
+                                        <?php echo($responsavel->nome); ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                        </p>
+                        <p>
+                            <label for="assunto">Assunto:</label>
+                            <input type="text" id="assunto" name="assunto" value="" required="required">
+                        </p>
+                        <p>
+                            <label for="mensagem">Mensagem:</label><br/>
+                            <textarea id="mensagem" class="required full" name="mensagem" required="required"></textarea>
+                        </p>
+                        <input type="submit" class="btn btn-green big float-right" value="Enviar"/>
+                        <input type="reset" class="btn big float-right" value="Cancelar"/>
+                    </fieldset>
+                </form>
+            </div>
         </section>
         <!-- End of Left column/section -->
     </div>

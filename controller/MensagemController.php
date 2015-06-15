@@ -37,19 +37,29 @@ class MensagemController extends Controller {
     }
 
     public function nova() {
+        $responsavel = new Responsavel();
+
+        $responsaveis = $responsavel->buscarTodos();
+        View::addData($responsaveis, 'responsaveis');
+
         View::load('MensagemNova');
     }
 
     public function enviar() {
         $msg = 'Falha ao enviar a mensagem';
-        if(isset($this->post['mensagem'])
-            AND isset($this->post['idPrecedente'])
-        ) {
-            $mensagem = new Mensagem();
+        $mensagem = new Mensagem();
 
+        if(!isset($this->post['idPrecedente'])) {
+            $this->post['idPrecedente'] = '';
+        }
+
+        if(isset($this->post['mensagem'])
+            AND isset($this->post['idDestinatario'])
+        ) {
             $mensagem->idAutor = Sessao::getIdPessoa();
-            $mensagem->idPrecedente = $this->post['idPrecedente'];
+            $mensagem->assunto = $this->post['assunto'];
             $mensagem->mensagem = $this->post['mensagem'];
+            $mensagem->idPrecedente = $this->post['idPrecedente'] ? : NULL;
             $mensagem->destinatario = $this->post['idDestinatario'];
 
             if($mensagem->gravar()) {
@@ -58,6 +68,11 @@ class MensagemController extends Controller {
         }
 
         Sessao::setMensagem($msg);
-        HTML::redirect('../mensagem/detalhes/'. $this->post['idPrecedente']);
+
+        if(empty($this->post['idPrecedente'])) {
+            HTML::redirect('../mensagem/listar');
+        } else {
+            HTML::redirect('../mensagem/detalhes/'. $this->post['idPrecedente']);
+        }
     }
 }
