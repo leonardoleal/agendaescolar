@@ -55,41 +55,41 @@ class ServicoMensagemController extends Controller {
 	}
 
 	public function alterarStatusMensagem() {
-		if (!empty($this->post['idMensagem'])
-				AND !empty($this->post['status'])
-		) {
-			// limpa valores em branco, caso haja
-			$this->post['idMensagem'] = array_filter($this->post['idMensagem']);
+        if (!empty($this->post['idMensagem'])
+                AND !empty($this->post['status'])
+        ) {
+            // limpa valores em branco, caso haja
+            $this->post['idMensagem'] = array_filter($this->post['idMensagem']);
 
-			$banco = new Banco();
-			$banco = $banco->getPdoConn();
-			$banco->beginTransaction();
+            $banco = new Banco();
+            $banco = $banco->getPdoConn();
+            $banco->beginTransaction();
 
-			$stmt = $banco->prepare('
-						UPDATE
-							responsavelmensagem AS rm
-							INNER JOIN responsavel AS r
-								ON r.idResponsavel = rm.idResponsavel
-							INNER JOIN pessoa AS p
-								ON p.idPessoa = r.idPessoa
-							INNER JOIN usuario AS u
-								ON u.idPessoa = p.idPessoa
-									AND u.token = :token
-						SET
-							status = :status
-						WHERE
-							rm.idMensagem IN('. join(',', $this->post['idMensagem']) .')
-			');
-			$stmt->bindValue(':status', $this->post['status'], PDO::PARAM_STR);
-			$stmt->bindValue(':token', Sessao::getToken(), PDO::PARAM_STR);
+            $stmt = $banco->prepare('
+                        UPDATE
+                            responsavelmensagem AS rm
+                            INNER JOIN responsavel AS r
+                                ON r.idResponsavel = rm.idResponsavel
+                            INNER JOIN pessoa AS p
+                                ON p.idPessoa = r.idPessoa
+                            INNER JOIN usuario AS u
+                                ON u.idPessoa = p.idPessoa
+                                    AND u.token = :token
+                        SET
+                            status = :status
+                        WHERE
+                            rm.idMensagem IN('. join(',', $this->post['idMensagem']) .')
+            ');
+            $stmt->bindValue(':status', $this->post['status'], PDO::PARAM_STR);
+            $stmt->bindValue(':token', Sessao::getToken(), PDO::PARAM_STR);
 
-			if ($stmt->execute()) {
-				$banco->commit();
+            if ($stmt->execute()) {
+                $banco->commit();
                 View::loadJSON(array('msg' => 'Sucesso.'));
-				exit(0);
-			}
+                exit(0);
+            }
 
-		}
+        }
 
         View::loadJSON(array('msg' => 'Erro.'));
 	}

@@ -54,6 +54,7 @@ class Sessao {
 		unset($_SESSION['nomeUsuario']);
 		unset($_SESSION['logado']);
 		unset($_SESSION['token']);
+        session_destroy();
 	}
 
 	static function redirecionaNaoLogado($url = '/') {

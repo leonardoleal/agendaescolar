@@ -24,7 +24,7 @@ class LoginController extends Controller {
 		}
 
 		Sessao::setMensagem('Usuário e/ou senha inválidos.');
-		$this->encerrar();
+        HTML::redirect('../login');
 	}
 
 	public function encerrar() {

@@ -12,6 +12,19 @@ class Data {
 		return utf8_encode(ucfirst(strftime('%A, %d de %B de %Y', strtotime($str))));
 	}
 
+    static public function getDia($str = 'today') {
+        Data::setLocalePtBr();
+
+
+        return date('j', strtotime($str));
+    }
+
+    static public function getMes($str = 'today') {
+        Data::setLocalePtBr();
+
+        return  date('n', strtotime($str));
+    }
+
 	static public function getDataHoraExtenso($str = 'now') {
 		Data::setLocalePtBr();
 
