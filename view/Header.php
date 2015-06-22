@@ -10,7 +10,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <![endif]-->
 
-<base href="http://agendaescolar.lealweb.com.br/">
+<base href="http://agendaescolar.lealweb.com.br">
 
 <!-- Favicons --> 
 <link rel="shortcut icon" type="image/png" href="static/img/favicons/favicon.png"/>
@@ -42,6 +42,8 @@
 <script type="text/javascript" src="static/js/jquery.validate_pack.js"></script>
 <!-- jQuery popup box -->
 <script type="text/javascript" src="static/js/jquery.nyroModal.pack.js"></script>
+<!-- jQuery data tables -->
+<script type="text/javascript" src="static/js/jquery.dataTables.min.js"></script>
 <!-- Internet Explorer Fixes --> 
 <!--[if IE]>
 <link rel="stylesheet" type="text/css" media="all" href="static/css/ie.css"/>
@@ -63,7 +65,7 @@
 			<div id="topnav">
 				<a href="default#"><img class="avatar" src="static/img/user_32.png" alt="" /></a>
 				Logado como <b><?php echo(Sessao::getNome()); ?></b>
-				<span>|</span> <a href="default#">Configurações</a>
+<!--				<span>|</span> <a href="default#">Configurações</a>-->
 				<span>|</span> <a href="login/encerrar">Sair</a><br />
 			</div>
 			<!-- End of Top navigation -->

@@ -30,4 +30,13 @@ class Data {
 
         return utf8_encode(ucfirst(strftime('%A, %d de %B de %Y as %H:%M', strtotime($str))));
 	}
+
+    static public function dateTimeHtml5ToSql($date) {
+        $date = explode('T', $date);
+        return $date[0] .' '. $date[1];
+    }
+
+    static public function dateTimeSqlToHtml5($date) {
+        return date("Y-m-d\TH:i:s", strtotime($date));
+    }
 }

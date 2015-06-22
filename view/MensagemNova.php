@@ -32,6 +32,11 @@
                             </select>
                         </p>
                         <p>
+                            <label for="dataEvento">Data do Evento:</label>
+                            <input type="datetime-local" id="dataEvento" name="dataEvento">
+                            <small>* caso for um evento preencha este campo</small>
+                        </p>
+                        <p>
                             <label for="assunto">Assunto:</label>
                             <input type="text" id="assunto" name="assunto" value="" required="required">
                         </p>

@@ -18,7 +18,7 @@ class ServicoMensagemController extends Controller {
 						pProf.nome as "professor"
 					FROM
 						mensagem AS m
-						INNER JOIN responsavelmensagem AS rm
+						INNER JOIN responsavel_mensagem AS rm
 							ON rm.idMensagem = m.idMensagem
 						INNER JOIN responsavel AS r
 							ON r.idResponsavel = rm.idResponsavel
@@ -67,7 +67,7 @@ class ServicoMensagemController extends Controller {
 
             $stmt = $banco->prepare('
                         UPDATE
-                            responsavelmensagem AS rm
+                            responsavel_mensagem AS rm
                             INNER JOIN responsavel AS r
                                 ON r.idResponsavel = rm.idResponsavel
                             INNER JOIN pessoa AS p
@@ -133,12 +133,12 @@ class ServicoMensagemController extends Controller {
 
 			$stmt = $banco->prepare('
 						INSERT INTO
-							professormensagem (
+							professor_mensagem (
 								idProfessor,
 								idMensagem
 							)
 						VALUES (
-							(SELECT pm.idProfessor FROM professormensagem pm WHERE pm.idMensagem = :idMensagem),
+							(SELECT pm.idProfessor FROM professor_mensagem pm WHERE pm.idMensagem = :idMensagem),
 							:idMensagemNova
 						);
 			');
@@ -153,7 +153,7 @@ class ServicoMensagemController extends Controller {
 
 			$stmt = $banco->prepare('
 						INSERT INTO
-							responsavelmensagem (
+							responsavel_mensagem (
 								idResponsavel,
 								idMensagem
 							)

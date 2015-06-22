@@ -26,3 +26,11 @@ span.label-left.voltar {
     text-align: center;
     margin-bottom: 1px;
 }
+
+
+.paginate_button.previous,
+.paginate_button.previous.disabled,
+.paginate_button.next.enabled,
+.paginate_button.next {
+    text-indent: -1000em;
+}

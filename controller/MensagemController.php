@@ -60,7 +60,9 @@ class MensagemController extends Controller {
             $mensagem->assunto = $this->post['assunto'];
             $mensagem->mensagem = $this->post['mensagem'];
             $mensagem->idPrecedente = $this->post['idPrecedente'] ? : NULL;
-            $mensagem->destinatario = $this->post['idDestinatario'];
+            $mensagem->idDestinatario = $this->post['idDestinatario'];
+            $mensagem->idDestinatario = $this->post['idDestinatario'];
+            $mensagem->dataEvento = !empty($this->post['dataEvento']) ? Data::dateTimeHtml5ToSql($this->post['dataEvento']) : NULL;
 
             if($mensagem->gravar()) {
                 $msg = 'Mensagem enviada';
@@ -74,5 +76,21 @@ class MensagemController extends Controller {
         } else {
             HTML::redirect('../mensagem/detalhes/'. $this->post['idPrecedente']);
         }
+    }
+
+    public function excluir() {
+        $msg = 'Falha ao excluir a(s) mensagem(s).';
+
+        if(empty($this->post['idMensagem'])) {
+            $msg = 'Para excluir é necessário selecionar ao menos uma mensagem.';
+        } else {
+            $mensagem = new Mensagem();
+            if($mensagem->excluirRelacaoProfessor($_POST['idMensagem'], Sessao::getIdPessoa())) {
+                $msg = 'Mensagem(s) excluída(s) com sucesso.';
+            }
+        }
+
+        Sessao::setMensagem($msg);
+        HTML::redirect('../mensagem/listar');
     }
 }

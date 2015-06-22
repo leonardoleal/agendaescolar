@@ -58,7 +58,13 @@
             <div class="column width8">
                 <div class="content-box corners content-box-closed">
                     <header>
-                        <h3><?php echo($mensagem->idAutor); ?></h3>
+                        <p><b>
+                            <?php
+                                foreach($mensagem->destinatarios as $destinatario) {
+                                    echo($destinatario .', ');
+                                }
+                            ?>
+                        </b></p>
                         <span><?php echo(Data::getDataExtenso($mensagem->dataEnvio)); ?></span>
                     </header>
                     <section>

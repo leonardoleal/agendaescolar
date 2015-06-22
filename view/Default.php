@@ -10,7 +10,7 @@
 		<div class="wrapper">
 			<h1>Visão Geral</h1>
 			<!-- Quick search box -->
-			<form action="" method="get"><input class="" type="text" id="q" name="q" /></form>
+<!--			<form action="" method="get"><input class="" type="text" id="q" name="q" /></form>-->
 		</div>
 	</div>
 	<!-- End of Page title -->
@@ -33,10 +33,10 @@
 							<?php } else { ?>
 								<?php foreach ($data['proximosEventos'] as $eventos) { ?>
 										<div class="leading width4 column">
-											<b class="big"><?php echo($eventos->getAssunto()); ?></b><br>
+											<b class="big"><?php echo($eventos->assunto); ?></b><br>
 											<small>
-												<abbr title="<?php echo(Data::getDataExtenso($eventos->getDataEvento())); ?>"><?php echo(Data::getDataExtenso($eventos->getDataEvento())); ?></abbr><br>
-												<a href="#">visualizar</a> · <a href="#">cancelar</a>
+												<abbr title="<?php echo($eventos->mensagem); ?>"><?php echo(Data::getDataExtenso($eventos->dataEvento)); ?></abbr><br>
+<!--												<a href="#">visualizar</a> · <a href="#">cancelar</a>-->
 											</small>
 										</div>
 								<?php } ?>

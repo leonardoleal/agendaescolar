@@ -4,7 +4,34 @@
 		$(document).ready(function(){
 			Administry.setup();
 
-//            linhaMensagem.init();
+            checkBoxesMensagem.init();
+
+            /* datatable */
+            $('#mensagens').dataTable({
+                "columns": [
+                    { "orderable": false },
+                    null,
+                    null,
+                    { "orderable": false }
+                ],
+                "pagingType": "simple",
+                "language": {
+                    "info": "Exibindo _START_ a _END_ de _TOTAL_ registros",
+                    "infoEmpty": "Exibindo 0 de _TOTAL_ registros",
+                    "infoFiltered": "(filtered from _MAX_ total entries)",
+                    "emptyTable": "Não há registros para exibir",
+                    "search": "Procurar:",
+                    "lengthMenu": 'Exibindo <select>'+
+                        '<option value="10" selected="selected">10</option>'+
+                        '<option value="20">20</option>'+
+                        '<option value="40">40</option>'+
+                        '<option value="50">50</option>'+
+                        '</select> mensagems',
+                    "loadingRecords": "Carregando...",
+                    "processing":     "Processando...",
+                    "zeroRecords":    "Nenhum registro encontrado"
+                }
+            });
 		});
 
         var linhaMensagem = {
@@ -35,6 +62,27 @@
                 });
             }
         };
+
+        checkBoxesMensagem = {
+            $chkBoxes: null,
+
+            init: function() {
+                $chkBoxes = $('#marcarTodos');
+                this.bind();
+            },
+
+            bind: function() {
+                $chkBoxes.on('click', this.checkAll);
+            },
+
+            checkAll: function() {
+                if($chkBoxes.is(':checked')) {
+                    $('table input:checkbox').prop('checked', 'checked');;
+                } else {
+                    $('table input:checkbox').removeAttr('checked');
+                }
+            }
+        }
 	</script>
 
 	<!-- Page title -->
@@ -42,7 +90,7 @@
 		<div class="wrapper">
 			<h1>Mensagens</h1>
 			<!-- Quick search box -->
-			<form action="" method="get"><input class="" type="text" id="q" name="q" /></form>
+<!--			<form action="" method="get"><input class="" type="text" id="q" name="q" /></form>-->
 		</div>
 	</div>
 	<!-- End of Page title -->
@@ -62,60 +110,54 @@
                     <a href="mensagem/nova">
                         <span class="label label-blue float-right">Nova Mensagem</span>
                     </a>
-					<a href="#"><span class="icon icon-trash">&nbsp;</span></a>
+                    <form action="mensagem/excluir" method="post" style="width: 100%">
+                        <input type="submit" class="icon icon-trash">
 
-					<div class="dataTables_paginate paging_two_button" id="example_paginate">
-						<div class="paginate_disabled_previous" title="Previous" id="example_previous"></div>
-						<div class="paginate_enabled_next" title="Next" id="example_next"></div>
-					</div>
-					<div class="float-right">Exibindo 1 a 4 de  <?php echo($data['totalRegistros']); ?>  registros</div>
-					<table class="display stylized" id="mensagens">
-						<thead>
-							<tr>
-                                <th><input type="checkbox" name="marcarTodos"></th>
-								<th>De</th>
-								<th>Assunto</th>
-								<th>Turma</th>
-								<th>Data</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach ($data['mensagens'] as $mensagem) { ?>
-                            <tr class="gradeX linhaMensagem">
-<!--                                    <input type="hidden" value="--><?php //echo($mensagem->idMensagem); ?><!--">-->
-                                <td><input type="checkbox" name="idMensagem[]" value="<?php echo($mensagem->idMensagem); ?>"></td>
-                                <td><?php echo($mensagem->idAutor); ?></td>
-                                <td>
-                                    <a href="mensagem/detalhes/<?php echo($mensagem->idMensagem); ?>"  title="Abrir Mensagem">
-                                        <b><?php echo($mensagem->assunto); ?></b>
-                                        <?php echo(!$mensagem->totalRespostas ? '' : '('. ($mensagem->totalRespostas + 1) .')'); ?>
-                                    </a>
-                                </td>
-                                <td><?php echo('Turma'); ?></td>
-                                <td><?php echo(Data::getDataExtenso($mensagem->dataEnvio)); ?></td>
-                            </tr>
-							<?php } ?>
-						</tbody>
-						<tfoot>
-							<tr>
-								<th colspan="5">&nbsp;</th>
-							</tr>
-						</tfoot>
-					</table>
+                        <table class="display stylized" id="mensagens">
+                            <thead>
+                                <tr>
+                                    <th class="sorting_disabled"><input type="checkbox" id="marcarTodos" name="marcarTodos"></th>
+                                    <th>Para</th>
+                                    <th>Assunto</th>
+                                    <th>Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($data['mensagens'] as $mensagem) { ?>
+                                <tr class="gradeX linhaMensagem">
+                                    <td><input type="checkbox" name="idMensagem[]" value="<?php echo($mensagem->idMensagem); ?>"></td>
+                                    <td>
+                                        <?php
+                                            foreach($mensagem->destinatarios as $destinatario) {
+                                                echo($destinatario .', ');
+                                            }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <a href="mensagem/detalhes/<?php echo($mensagem->idMensagem); ?>"  title="Abrir Mensagem">
+                                            <b><?php echo($mensagem->assunto); ?></b>
+                                            <?php echo(!$mensagem->totalRespostas ? '' : '('. ($mensagem->totalRespostas + 1) .')'); ?>
+                                        </a>
+                                    </td>
+                                    <td><?php echo(Data::getDataExtenso($mensagem->dataEnvio)); ?></td>
+                                </tr>
+                                <?php } ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>&nbsp;</th>
+                                    <td>&nbsp;</th>
+                                    <td>&nbsp;</th>
+                                    <td>&nbsp;</th>
+                                </tr>
+                            </tfoot>
+                        </table>
 
-					<a href="#"><span class="icon icon-trash">&nbsp;</span></a>
+                        <input type="submit" class="icon icon-trash">
+                    </form>
                     <a href="mensagem/nova">
                         <span class="label label-blue float-right">Nova Mensagem</span>
                     </a>
-
-					<div class="dataTables_paginate paging_two_button" id="example_paginate">
-						<div class="paginate_disabled_previous" title="Previous" id="example_previous"></div>
-						<div class="paginate_enabled_next" title="Next" id="example_next"></div>
-					</div>
-					<div class="float-right">
-                        Exibindo <?php echo(sizeof($data['mensagens'])); ?>
-                        de <?php echo($data['totalRegistros']); ?> registros
-                    </div>
 
 					<div class="clear">&nbsp;</div>
 					<div class="clear">&nbsp;</div>
